@@ -1,0 +1,22 @@
+mutation SaveReview(
+    $customerToken: String!,
+    $storeId: Int!,
+    $productId: Int!,
+    $nickname: String!,
+    $detail: String!,
+    $title: String!,
+    $ratings: [reviewRatings!]!
+) {
+    saveReview(
+        customerToken: $customerToken,
+        storeId: $storeId,
+        productId: $productId,
+        nickname: $nickname,
+        detail: $detail,
+        title: $title,
+        ratings: $ratings
+    ) {
+        success
+        message
+    }
+}

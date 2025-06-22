@@ -1,0 +1,25 @@
+mutation MutantLogin(
+    $username: String!,
+    $password: String!,
+    $storeId: Int!,
+    $websiteId: Int!,
+    $token: String!
+) {
+    login(
+        username: $username,
+        password: $password,
+        storeId: $storeId,
+        websiteId: $websiteId,
+        token: $token
+    ) {
+        success
+        message
+        customerEmail
+        customerName
+        customerId
+        customerToken
+        cartCount
+        profileImage
+        bannerImage
+    }
+}

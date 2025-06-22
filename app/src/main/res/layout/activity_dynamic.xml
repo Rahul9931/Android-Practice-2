@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".Dynamic_View_Practice.activity.DynamicActivity">
+
+    <!-- Add Spinner Button -->
+    <Button
+        android:id="@+id/btnAddSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Spinner" />
+
+    <!-- Container where Spinner will be added -->
+    <LinearLayout
+        android:id="@+id/spinnerContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Space to push the middle button to center -->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- Button in the Middle of the Screen -->
+    <Button
+        android:id="@+id/middleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Middle Button"
+        android:layout_gravity="center_horizontal"/>
+
+    <!-- Push remaining space below -->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+</LinearLayout>
+

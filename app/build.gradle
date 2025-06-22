@@ -1,0 +1,71 @@
+plugins {
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.jetbrainsKotlinAndroid)
+    id 'com.apollographql.apollo'
+}
+
+android {
+    namespace 'com.example.android_practice_2'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "com.example.android_practice_2"
+        minSdk 24
+        targetSdk 35
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        dataBinding = true
+    }
+
+}
+
+apollo {
+    service("apollo-scema-sevice") {
+        packageName.set("src.main.graphql")
+        introspection {
+            endpointUrl = "https://demomobikul.webkul.in/mobikul1/pub/graphql"
+            schemaFile.set(file("src/main/graphql/schema.sdl"))
+        }
+    }
+}
+
+dependencies {
+
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.appcompat
+    implementation libs.material
+    implementation libs.androidx.activity
+    implementation libs.androidx.constraintlayout
+    // graphql
+    implementation("com.apollographql.apollo:apollo-runtime:4.0.0")
+    testImplementation libs.junit
+    androidTestImplementation libs.androidx.junit
+    androidTestImplementation libs.androidx.espresso.core
+
+    // socket
+    implementation("io.socket:socket.io-client:2.0.0")
+
+    // For Foreground Service
+    implementation("androidx.lifecycle:lifecycle-service:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+
+}

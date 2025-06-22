@@ -1,0 +1,192 @@
+query GetHomePageData($customerToken: String, $storeId: Int, $websiteId: Int, $currency: String, $quoteId: Int) {
+    homePageData(customerToken:$customerToken,storeId:$storeId,websiteId:$websiteId,currency:$currency,quoteId:$quoteId) {
+        message
+        otherError
+        success
+        storeId
+        defaultCurrency
+        allowedCurrencies {
+            label
+            code
+        }
+        tabCategoryView
+        launcherIconType
+        darkAppButtonColor
+        darkAppThemeColor
+        darkAppThemeTextColor
+        darkButtonTextColor
+        darkAppLogo
+        darkSplashImage
+        darkAppLogoDominantColor
+        appButtonColor
+        appThemeColor
+        appThemeTextColor
+        buttonTextColor
+        splashImage
+        appLogo
+        appLogoDominantColor
+        allowIosDownload
+        iosDownloadLink
+        allowAndroidDownload
+        androidDownloadLink
+        showSwatchOnCollection
+        walkthroughVersion
+        priceFormat {
+            pattern
+            precision
+            requiredPrecision
+            decimalSymbol
+            groupSymbol
+            groupLength
+            integerRequired
+        }
+        themeCode
+        categories {
+            id
+            name
+            banner
+            thumbnail
+            hasChildren
+            bannerDominantColor
+            thumbnailDominantColor
+        }
+        featuredCategories {
+            url
+            dominantColor
+            categoryId
+            categoryName
+        }
+        bannerImages {
+            url
+            dominantColor
+            bannerType
+            id
+            name
+        }
+        carousel {
+            id
+            type
+            label
+            productList {
+                reviewCount
+                isInWishlist
+                wishlistItemId
+                configurableData {
+                    attributes {
+                        id
+                        code
+                        label
+                        options {
+                            id
+                            label
+                            products
+                        }
+                        swatchType
+                        updateProductPreviewImage
+                    }
+                    template
+                    optionPrices {
+                        oldPrice {
+                            amount
+                        }
+                        basePrice {
+                            amount
+                        }
+                        finalPrice {
+                            amount
+                        }
+                        tierPrices {
+                            amount
+                        }
+                        msrpPrice {
+                            amount
+                        }
+                        product
+                    }
+                    productId
+                    chooseText
+                    images
+                    index
+                    swatchData
+                }
+                typeId
+                entityId
+                linksPurchasedSeparately
+                rating
+                isAvailable
+                price
+                finalPrice
+                formattedPrice
+                formattedFinalPrice
+                name
+                msrpEnabled
+                hasRequiredOptions
+                msrpDisplayActualPriceType
+                groupedPrice
+                priceView
+                minPrice
+                maxPrice
+                formattedMaxPrice
+                formattedMinPrice
+                isNew
+                isInRange
+                thumbNail
+                dominantColor
+                tierPrice
+                formattedTierPrice
+                minAddToCartQty
+                availability
+                arUrl
+                arType
+                arTextureImages
+            }
+            color
+            image
+            dominantColor
+            banners {
+                url
+                dominantColor
+                bannerType
+                id
+                name
+            }
+        }
+        cmsData {
+            id
+            title
+        }
+        storeData {
+            id
+            name
+        }
+        storeData {
+            id
+            name
+            stores {
+                id
+                code
+                name
+            }
+        }
+        websiteId
+
+
+        currentCurrency
+        wishlistEnable
+        customerName
+        customerEmail
+        cartCount
+        customerBannerImage
+        bannerDominantColor
+        customerProfileImage
+        customerDominantColor
+        sortOrder {
+            id
+            layoutId
+            label
+            position
+            type
+        }
+
+    }
+}
