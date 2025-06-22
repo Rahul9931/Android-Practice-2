@@ -79,7 +79,9 @@
         <service
             android:name=".service_practice.service.SocketForegroundService"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false"
+            android:stopWithTask="true"
+            />
 
     </application>
 

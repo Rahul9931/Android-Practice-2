@@ -12,49 +12,43 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.android_practice_2.R
 import com.example.android_practice_2.service_practice.activity.ServicePracticeActivity
-import io.socket.client.IO
-import io.socket.client.Socket
-import io.socket.emitter.Emitter
-import org.json.JSONObject
+import com.example.android_practice_2.service_practice.socket.SocketManager
 
 class SocketForegroundService : Service() {
-    private lateinit var socket: Socket
+    private lateinit var socketManager: SocketManager
     private val TAG = "SocketService"
     private val CHANNEL_ID = "SocketServiceChannel"
     private val NOTIFICATION_ID = 101
-    private val SERVER_URL = "http://192.168.1.43:3000"
 
     override fun onCreate() {
         super.onCreate()
         Log.d(TAG, "Service onCreate")
         createNotificationChannel()
         startForeground(NOTIFICATION_ID, createNotification("Connecting..."))
-        setupSocket()
     }
 
-    private fun setupSocket() {
-        try {
-            val options = IO.Options().apply {
-                reconnection = true
-                reconnectionAttempts = Int.MAX_VALUE
-                reconnectionDelay = 2000
-                timeout = 20000
-                transports = arrayOf("websocket")
-                secure = false
-                query = "platform=android"
-            }
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        val serverUrl = intent?.getStringExtra("SERVER_URL") ?: "http://192.168.1.43:3000"
 
-            socket = IO.socket(SERVER_URL, options).apply {
-                on(Socket.EVENT_CONNECT, onConnect)
-                on(Socket.EVENT_DISCONNECT, onDisconnect)
-                on(Socket.EVENT_CONNECT_ERROR, onConnectError)
-                on("server_message", onMessageReceived)
-            }
+        socketManager = SocketManager(this, serverUrl).apply {
+            setListener(object : SocketManager.SocketListener {
+                override fun onMessageReceived(message: String) {
+                    updateNotification("New message received")
+                }
 
-            socket.connect()
-        } catch (e: Exception) {
-            Log.e(TAG, "Socket initialization error", e)
+                override fun onConnectionChanged(isConnected: Boolean) {
+                    updateNotification(if (isConnected) "Connected" else "Disconnected")
+                }
+
+                override fun onError(error: String) {
+                    Log.e(TAG, error)
+                    updateNotification("Error: ${error.take(20)}...")
+                }
+            })
+            connect()
         }
+
+        return START_STICKY
     }
 
     private fun createNotificationChannel() {
@@ -97,47 +91,17 @@ class SocketForegroundService : Service() {
             .notify(NOTIFICATION_ID, notification))
     }
 
-    private val onConnect = Emitter.Listener {
-        Log.d(TAG, "✅ Connected to server")
-        updateNotification("Connected to server")
-    }
-
-    private val onDisconnect = Emitter.Listener {
-        Log.d(TAG, "❌ Disconnected from server")
-        updateNotification("Disconnected from server")
-    }
-
-    private val onConnectError = Emitter.Listener { args ->
-        val error = args[0] as? Exception
-        Log.e(TAG, "Connection error: ${error?.message}")
-        updateNotification("Connection error")
-    }
-
-    private val onMessageReceived = Emitter.Listener { args ->
-        try {
-            val data = args[0] as JSONObject
-            val time = data.getString("time")
-            val message = data.getString("message")
-            Log.d(TAG, "📩 Received: $message at $time")
-
-            // Broadcast message to activity
-            Intent().apply {
-                action = "SOCKET_MESSAGE_RECEIVED"
-                putExtra("message", "$message at $time")
-            }.also { intent ->
-                sendBroadcast(intent)
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "Error parsing message", e)
-        }
+    override fun onDestroy() {
+        super.onDestroy()
+        socketManager.disconnect()
+        Log.d(TAG, "Service destroyed")
     }
 
     override fun onBind(intent: Intent?): IBinder? = null
 
-    override fun onDestroy() {
-        super.onDestroy()
-        socket.disconnect()
-        socket.off()
-        Log.d(TAG, "Service destroyed")
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        super.onTaskRemoved(rootIntent)
+
+        stopSelf()
     }
 }

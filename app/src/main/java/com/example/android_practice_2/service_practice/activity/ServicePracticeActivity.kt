@@ -9,25 +9,15 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.lifecycleScope
 import com.example.android_practice_2.R
 import com.example.android_practice_2.databinding.ActivityServicePracticeBinding
-import com.example.android_practice_2.service_practice.service.ShowOfferService
 import com.example.android_practice_2.service_practice.service.SocketForegroundService
-import io.socket.client.IO
-import io.socket.client.Socket
-import io.socket.emitter.Emitter
-import kotlinx.coroutines.launch
-import org.json.JSONObject
-import java.net.URISyntaxException
 
 class ServicePracticeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityServicePracticeBinding
@@ -44,10 +34,11 @@ class ServicePracticeActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_service_practice)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_service_practice)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -55,16 +46,18 @@ class ServicePracticeActivity : AppCompatActivity() {
             insets
         }
 
-        // Register broadcast receiver
         registerReceiver(messageReceiver, IntentFilter("SOCKET_MESSAGE_RECEIVED"))
 
-        // Start the foreground service
         if (isNetworkAvailable()) {
-            startService(Intent(this, SocketForegroundService::class.java))
+            // Start service with dynamic URL
+            val serviceIntent = Intent(this, SocketForegroundService::class.java).apply {
+                putExtra("SERVER_URL", "http://192.168.1.43:3000") // Pass your dynamic URL here
+            }
+            startForegroundService(serviceIntent)
+
         } else {
             Log.e(TAG, "No network available")
         }
-
     }
 
     private fun isNetworkAvailable(): Boolean {
@@ -77,10 +70,6 @@ class ServicePracticeActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        // Unregister receiver
         unregisterReceiver(messageReceiver)
-        // Optionally stop service when activity is destroyed
-        // stopService(Intent(this, SocketService::class.java))
     }
-
 }
