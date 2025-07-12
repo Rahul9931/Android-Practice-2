@@ -8,9 +8,18 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.android_practice_2.R
 import com.example.android_practice_2.di.dagger2.di.DaggerUserRegistrationComponent
 import com.example.android_practice_2.di.dagger2.di.UserRegistrationComponent
+import com.example.android_practice_2.di.dagger2.service.EmailService
+import com.example.android_practice_2.di.dagger2.service.UserRegistrationService
 import dagger.internal.DaggerGenerated
+import javax.inject.Inject
 
 class Dagger2PracticeActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var userRegistrationService:UserRegistrationService
+
+    @Inject
+    lateinit var emailService:EmailService
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -21,8 +30,7 @@ class Dagger2PracticeActivity : AppCompatActivity() {
             insets
         }
         val component = DaggerUserRegistrationComponent.builder().build()
-        val userRegistrationService = component.getUserRegistrationService()
-        component.getEmailService()
+        component.inject(this)
         userRegistrationService.registerUser("example@gmail.com","12345")
     }
 }
