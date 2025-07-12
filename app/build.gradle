@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id 'com.apollographql.apollo'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -67,5 +68,9 @@ dependencies {
     // For Foreground Service
     implementation("androidx.lifecycle:lifecycle-service:2.6.2")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+
+    // dagger 2
+    implementation 'com.google.dagger:dagger:2.50'
+    kapt('com.google.dagger:dagger-compiler:2.50')
 
 }
