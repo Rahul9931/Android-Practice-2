@@ -18,12 +18,6 @@ class Daggar2Practice2Activity : AppCompatActivity() {
     lateinit var mainViewModel: MainViewModel
 
     @Inject
-    lateinit var fakerDB1 : FakerDB
-
-    @Inject
-    lateinit var fakerDB2 : FakerDB
-
-    @Inject
     lateinit var mainViewModelFactory: MainViewModelFactory
 
     private val products: TextView
@@ -38,7 +32,9 @@ class Daggar2Practice2Activity : AppCompatActivity() {
             insets
         }
 
-        (application as FakerApplication).applicationComponent.inject(this)
+        val component = (application as FakerApplication).applicationComponent
+        component.inject(this)
+        component.getMap()
 
         mainViewModel = ViewModelProvider(this,mainViewModelFactory).get(MainViewModel::class.java)
 
