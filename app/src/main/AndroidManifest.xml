@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
+        android:name=".di.dagger2.activity.FakerApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -21,7 +22,7 @@
         android:theme="@style/Theme.Android_Practice_2"
         tools:targetApi="31">
         <activity
-            android:name=".di.dagger2.activity.Dagger2PracticeActivity"
+            android:name=".di.dagger2.mvvm.activity.Daggar2Practice2Activity"
             android:exported="true">
 
             <intent-filter>
@@ -31,10 +32,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".service_practice.activity.ServicePracticeActivity"
+            android:name=".di.dagger2.activity.Dagger2PracticeActivity"
             android:exported="true">
 
         </activity>
+        <activity
+            android:name=".service_practice.activity.ServicePracticeActivity"
+            android:exported="true"></activity>
         <activity
             android:name=".deeplink_.activity.SplashActivity"
             android:exported="true">
