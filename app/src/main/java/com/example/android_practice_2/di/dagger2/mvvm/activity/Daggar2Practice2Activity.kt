@@ -8,7 +8,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.android_practice_2.R
-import com.example.android_practice_2.di.dagger2.activity.FakerApplication
+import com.example.android_practice_2.di.dagger2.mvvm.db.FakerDB
 import com.example.android_practice_2.di.dagger2.mvvm.viewmodels.MainViewModel
 import com.example.android_practice_2.di.dagger2.mvvm.viewmodels.MainViewModelFactory
 import javax.inject.Inject
@@ -16,6 +16,12 @@ import javax.inject.Inject
 class Daggar2Practice2Activity : AppCompatActivity() {
 
     lateinit var mainViewModel: MainViewModel
+
+    @Inject
+    lateinit var fakerDB1 : FakerDB
+
+    @Inject
+    lateinit var fakerDB2 : FakerDB
 
     @Inject
     lateinit var mainViewModelFactory: MainViewModelFactory

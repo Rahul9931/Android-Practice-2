@@ -1,4 +1,4 @@
-package com.example.android_practice_2.di.dagger2.activity
+package com.example.android_practice_2.di.dagger2.mvvm.activity
 
 import android.app.Application
 import com.example.android_practice_2.di.dagger2.mvvm.di.ApplicationComponent
@@ -10,7 +10,7 @@ class FakerApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        applicationComponent = DaggerApplicationComponent.builder().build()
+        applicationComponent = DaggerApplicationComponent.factory().create(this)
     }
 
 }
